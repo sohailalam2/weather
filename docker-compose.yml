@@ -1,0 +1,42 @@
+version: "3"
+
+volumes:
+  db: {}
+
+services:
+
+  mongodb:
+    image: mvertes/alpine-mongo
+    volumes:
+      - db:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    restart: unless-stopped
+
+  web:
+    build: ./
+    image: weather-app
+    depends_on:
+      - mongodb
+      - redis
+    ports:
+      - "18080:8080"
+    links:
+      - mongodb
+      - redis
+    command: ./start-web.sh
+    restart: unless-stopped
+
+  cron:
+    image: weather-app
+    depends_on:
+      - mongodb
+      - redis
+      - web
+    links:
+      - mongodb
+      - redis
+    command: ./start-cron.sh
+    restart: unless-stopped
