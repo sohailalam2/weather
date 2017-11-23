@@ -1,0 +1,31 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": "8080"
+  },
+  "database": {
+    "mongodb": {
+      "host": "localhost",
+      "port": 27017,
+      "db_name": "weather"
+    },
+    "redis": {
+      "host": "localhost",
+      "port": 6379
+    }
+  },
+  "google_api_key": "AIzaSyA80weczq-vz0g0-9BsBNs7WLKRA2r10Zg",
+  "weather_api_key": "110d6ab4f13fdbfc30ac1247bc2454c2",
+  "subscriptions": [
+    {
+      "address": "tallinn",
+      "alert_min_temperature": 35,
+      "alert_max_temperature": 45
+    },
+    {
+      "address": "kolkata",
+      "alert_min_temperature": 60,
+      "alert_max_temperature": 80
+    }
+  ]
+}

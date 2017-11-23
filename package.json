@@ -1,0 +1,23 @@
+{
+  "name": "weather",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "web": "node src/index",
+    "cron": "node src/cron/index"
+  },
+  "author": "Sohail Alam",
+  "license": "MIT",
+  "dependencies": {
+    "@google/maps": "0.4.5",
+    "axios": "0.17.1",
+    "body-parser": "1.18.2",
+    "express": "4.16.2",
+    "mkdirp": "latest",
+    "mongoose": "4.13.4",
+    "morgan": "1.9.0",
+    "redis": "2.8.0",
+    "winston": "2.4.0"
+  }
+}

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Weather Forecast</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg">
+    <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+<div class="container" id="app">
+    <!-- Heading -->
+    <header class="row">
+        <div class="col-md-12">
+            <h1 class="text-center text-info">The Weather Forcaster!!</h1>
+        </div>
+    </header>
+    <!--
+                ERROR/SUCCESS ALERT MESSAGES
+    -->
+    <div class="row">
+        <div class="col-md-12" v-if="error">
+            <div class="alert alert-danger" role="alert">{{error}}</div>
+        </div>
+        <div class="col-md-12" v-if="message">
+            <div class="alert alert-success" role="alert">{{message}}</div>
+        </div>
+    </div>
+    <!--
+                WEATHER SUBSCRIPTION SECTION
+    -->
+    <section class="row">
+        <div class="col-md-12">
+            <h3 class="text-primary">Subscribe for weather update</h3>
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 form-row">
+            <div class="form-group col-md-6">
+                <label for="address" class="text-secondary">Address</label>
+                <input type="text" class="form-control" id="address" aria-label="address" autofocus="autofocus"
+                       v-model="subscription.address">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="alertMinTemp" class="text-secondary">Alert Min Temp.</label>
+                <input type="number" class="form-control" id="alertMinTemp"
+                       v-model="subscription.alert_min_temperature">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="alertMaxTemp" class="text-secondary">Alert Max Temp.</label>
+                <input type="number" class="form-control" id="alertMaxTemp"
+                       v-model="subscription.alert_max_temperature">
+            </div>
+        </div>
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary" @click="subscribe">Subscribe</button>
+            <button type="button" class="btn btn-success" @click="checkWeather">Check Weather</button>
+        </div>
+    </div>
+    <!--
+                WEATHER ALERTS
+    -->
+    <section class="row">
+        <div class="col-md-12">
+            <h3 class="text-primary">Weather Alerts</h3>
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-md-4" v-if="alerts && alerts.length > 0" v-for="alert in alerts">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{alert.address}}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">{{formatAlertType(alert.type)}}</h6>
+                    <p class="card-text">
+                        <span class="text-info">Limit Temperature: <strong>{{alert.limit}}</strong></span> <br/>
+                        <span class="text-warning">Current Temperature: <strong>{{alert.temperature}}</strong></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" v-else="alerts && alerts.length > 0">
+            <p class="text-info">There are no weather alerts yet!!</p>
+        </div>
+    </div>
+    <!--
+                WEATHER SUBSCRIPTIONS
+    -->
+    <section class="row">
+        <div class="col-md-12">
+            <h3 class="text-primary">Weather Subscriptions</h3>
+        </div>
+    </section>
+    <div class="row">
+        <div class="col-md-4" v-if="weather && weather.length > 0" v-for="w in weather">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{w.address}}
+                        <small>({{w.timezone}})</small>
+                    </h4>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        <i :class="['fa', getWeatherIcon(w.icon)]"></i> &nbsp;{{w.summary}}
+                    </h6>
+                    <p class="card-text">
+                        <span class="text-info">Last Update: <strong>{{new Date(w.time).toLocaleString()}}</strong></span>
+                        <br/>
+                        <span class="text-warning">Temperature: <strong>{{w.temperature}}</strong></span>
+                    </p>
+                    <strong>Next 5 days...</strong>
+                    <hr >
+                    <ul style="list-style: none">
+                        <li v-for="d in w.daily" >
+                            <strong>{{new Date(d.time).toDateString()}}</strong><br />
+                            <i :class="['fa', getWeatherIcon(d.icon)]"></i> &nbsp;{{d.summary}}<br />
+                            <small>Min/Max Temp: {{d.temperatureMin}}&nbsp;/&nbsp;{{d.temperatureMax}}</small><br />
+                            <hr />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12" v-else="alerts && alerts.length > 0">
+            <p class="text-info">There are no weather alerts yet!!</p>
+        </div>
+    </div>
+    <br >
+    <br >
+    <br >
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.8/vue.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
